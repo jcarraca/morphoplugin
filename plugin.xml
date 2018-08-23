@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="cordova-plugin-morpho" version="0.0.1">
+    <name>MorphoPlugin</name>
+
+    <description>An Android Cordova plugin that allows users to interact with Morpho Reader Plugin.</description>
+    <license>MIT</license>
+
+    <keywords>cordova,android,morpho,fingerprint,reader,huella,reniec</keywords>
+    <repo>https://github.com/jcarraca/morphoplugin.git</repo>
+    <issue>https://github.com/jcarraca/morphoplugin/issues</issue>
+  
+    <engines>
+        <engine name="cordova" version=">=3.0.0"/>
+    </engines>
+  
+    <js-module src="www/morphoplugin.js" name="morphoPlugin">
+        <clobbers target="window.plugins.morphoPlugin" />
+    </js-module>
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="MorphoPlugin">
+                <param name="android-package" value="com.jcarraca.cordova.plugin"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/MorphoPlugin.java" target-dir="src/com/jcarraca/cordova/plugin" />
+		<source-file src="src/android/UsbBroadcastReceiver.java" target-dir="src/com/jcarraca/cordova/plugin" />
+		<source-file src="lib/usbseriallibrary.jar" target-dir="libs" />
+		
+    </platform>
+</plugin>
