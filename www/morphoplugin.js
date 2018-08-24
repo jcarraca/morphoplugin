@@ -8,27 +8,9 @@ var serial = {
         cordova.exec(
             successCallback,
             errorCallback,
-            'Serial',
+            'MorphoPlugin',
             'requestPermission',
             [{'opts': opts}]
-        );
-    },
-    open: function(opts, successCallback, errorCallback) {
-        cordova.exec(
-            successCallback,
-            errorCallback,
-            'Serial',
-            'openSerial',
-            [{'opts': opts}]
-        );
-    },
-    close: function(successCallback, errorCallback) {
-        cordova.exec(
-            successCallback,
-            errorCallback,
-            'Serial',
-            'closeSerial',
-            []
         );
     }
 
