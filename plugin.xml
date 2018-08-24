@@ -21,7 +21,7 @@
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="MorphoPlugin">
-                <param name="android-package" value="com.jcarraca.cordova.plugin"/>
+                <param name="android-package" value="com.jcarraca.cordova.plugin.MorphoPlugin"/>
             </feature>
         </config-file>
 
