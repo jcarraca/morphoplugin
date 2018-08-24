@@ -1,21 +1,72 @@
-// Empty constructor
-function ToastyPlugin() {}
+var serial = {
+    requestPermission: function(opts, successCallback, errorCallback) {
+        if (typeof opts === 'function') {  //user did not pass opts
+          errorCallback = successCallback;
+          successCallback = opts;
+          opts = {};
+        }
+        cordova.exec(
+            successCallback,
+            errorCallback,
+            'Serial',
+            'requestPermission',
+            [{'opts': opts}]
+        );
+    },
+    open: function(opts, successCallback, errorCallback) {
+        cordova.exec(
+            successCallback,
+            errorCallback,
+            'Serial',
+            'openSerial',
+            [{'opts': opts}]
+        );
+    },
+    write: function(data, successCallback, errorCallback) {
+        cordova.exec(
+            successCallback,
+            errorCallback,
+            'Serial',
+            'writeSerial',
+            [{'data': data}]
+        );
+    },
+    writeHex: function(hexString, successCallback, errorCallback) {
+        cordova.exec(
+            successCallback,
+            errorCallback,
+            'Serial',
+            'writeSerialHex',
+            [{'data': hexString}]
+        );
+    },
+    read: function(successCallback, errorCallback) {
+        cordova.exec(
+            successCallback,
+            errorCallback,
+            'Serial',
+            'readSerial',
+            []
+        );
+    },
+    close: function(successCallback, errorCallback) {
+        cordova.exec(
+            successCallback,
+            errorCallback,
+            'Serial',
+            'closeSerial',
+            []
+        );
+    },
+    registerReadCallback: function(successCallback, errorCallback) {
+        cordova.exec(
+            successCallback,
+            errorCallback,
+            'Serial',
+            'registerReadCallback',
+            []
+        );
+    }
 
-// The function that passes work along to native shells
-// Message is a string, duration may be 'long' or 'short'
-ToastyPlugin.prototype.show = function(message, duration, successCallback, errorCallback) {
-  var options = {};
-  options.message = message;
-  options.duration = duration;
-  cordova.exec(successCallback, errorCallback, 'ToastyPlugin', 'show', [options]);
-}
-
-// Installation constructor that binds ToastyPlugin to window
-ToastyPlugin.install = function() {
-  if (!window.plugins) {
-    window.plugins = {};
-  }
-  window.plugins.toastyPlugin = new ToastyPlugin();
-  return window.plugins.toastyPlugin;
 };
-cordova.addConstructor(ToastyPlugin.install);
+module.exports = serial;
