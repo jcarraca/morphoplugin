@@ -15,7 +15,7 @@
         <engine name="cordova" version=">=3.0.0"/>
     </engines>
   
-    <js-module src="www/morphoplugin.js" name="morphoPlugin">
+    <js-module src="www/morphoplugin.js" name="MorphoPlugin">
         <clobbers target="window.plugins.morphoPlugin" />
     </js-module>
     <platform name="android">
