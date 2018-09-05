@@ -27,7 +27,10 @@
 
         <source-file src="src/android/MorphoPlugin.java" target-dir="src/com/jcarraca/cordova/plugin" />
 		<source-file src="src/android/UsbBroadcastReceiver.java" target-dir="src/com/jcarraca/cordova/plugin" />
-		<source-file src="lib/usbseriallibrary.jar" target-dir="libs" />
+		<source-file src="src/android/libs/MorphoSmart_SDK_6.17.3.0.jar" target-dir="libs" />
+		<source-file src="src/android/libs/android-support-v4.jar" target-dir="libs" />
+		<source-file src="src/android/libs/MSO_Secu.jar" target-dir="libs" />
+		<source-file src="src/android/libs/usbseriallibrary.jar" target-dir="libs" />
 		
     </platform>
 </plugin>
