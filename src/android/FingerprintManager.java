@@ -88,10 +88,6 @@ public class FingerprintManager {
 	
 	public void initialize2(Context newContext, FingerprintManagerCallback newFingerPrintManagerCallback) {
         context = newContext;
-        fingerprintManagerCallback = newFingerPrintManagerCallback;
-        compressionAlgorithmValue = newCompressionAlgorithmValue;
-        compressionRate = newCompressionRate;
-        isLatentDetection = newLatentDetection;
         morphoDevice = new MorphoDevice();
         fingerPrintUsbDeviceConnection = new FingerPrintUsbDeviceConnection();
         secuConfig = new SecuConfig();
