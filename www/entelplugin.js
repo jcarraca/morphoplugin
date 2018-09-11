@@ -11,6 +11,11 @@ EntelPlugin.prototype.start = function(compressionAlgorithm, compressionRate, la
   cordova.exec(successCallback, errorCallback, 'EntelPlugin', 'start', [options]);
 }
 
+EntelPlugin.prototype.connect = function(successCallback, errorCallback) {
+  var options = {};
+  cordova.exec(successCallback, errorCallback, 'EntelPlugin', 'connect', [options]);
+}
+
 EntelPlugin.prototype.stop = function(successCallback, errorCallback) {
   var options = {};
   cordova.exec(successCallback, errorCallback, 'EntelPlugin', 'stop', [options]);
