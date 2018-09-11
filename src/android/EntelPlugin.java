@@ -47,6 +47,16 @@ public class EntelPlugin extends CordovaPlugin {
             callbackContext.sendPluginResult(pluginResult);
             return true;
         }
+		
+		if(action.equals("connect")){
+			Context context = cordova.getActivity().getApplicationContext();
+            FingerprintManager.getInstance().initialize(context, getFingerprintManagerCallback(context, callbackContext));
+			
+			PluginResult pluginResult = new  PluginResult(PluginResult.Status.NO_RESULT);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+		}
 
         PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
         callbackContext.sendPluginResult(pluginResult);

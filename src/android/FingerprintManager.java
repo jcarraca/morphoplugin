@@ -85,6 +85,37 @@ public class FingerprintManager {
             fingerprintManagerCallback.onError(FingerprintError.PERMISSION_DENIED);
         }
     }
+	
+	public void initialize2(Context newContext, FingerprintManagerCallback newFingerPrintManagerCallback) {
+        context = newContext;
+        fingerprintManagerCallback = newFingerPrintManagerCallback;
+        compressionAlgorithmValue = newCompressionAlgorithmValue;
+        compressionRate = newCompressionRate;
+        isLatentDetection = newLatentDetection;
+        morphoDevice = new MorphoDevice();
+        fingerPrintUsbDeviceConnection = new FingerPrintUsbDeviceConnection();
+        secuConfig = new SecuConfig();
+        USBManager.getInstance().initialize(context, context.getPackageName() + ".USB_ACTION", true);
+        if (USBManager.getInstance().isDevicesHasPermission()) {
+            UsbManager usbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
+			HashMap<String, UsbDevice> usbDeviceHashMap = usbManager.getDeviceList();
+			if (usbDeviceHashMap.isEmpty()) {
+				fingerprintManagerCallback.onFingerprintStatusUpdate(FingerprintStatus.DISCONNECTED);
+			} else {
+				UsbDevice usbDevice = usbDeviceHashMap.values().iterator().next();
+				if (MorphoUtils.isSupported(usbDevice.getVendorId(), usbDevice.getProductId())) {
+					if (usbManager.hasPermission(usbDevice)) {
+						updateUsbDeviceConnection(usbManager, usbDevice);
+					} else {
+						usbManager.requestPermission(usbDevice, PendingIntent.getBroadcast(context, 0, new Intent(USB_PERMISSION), 0));
+						fingerprintManagerCallback.onFingerprintStatusUpdate(FingerprintStatus.DISCONNECTED);
+					}
+				}
+			}
+        } else {
+            fingerprintManagerCallback.onFingerprintStatusUpdate(FingerprintStatus.DISCONNECTED);
+        }
+    }
 
     private void connectToMorphoDevice() {
         UsbManager usbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
