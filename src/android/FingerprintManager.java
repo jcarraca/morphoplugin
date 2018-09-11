@@ -101,10 +101,10 @@ public class FingerprintManager {
 				UsbDevice usbDevice = usbDeviceHashMap.values().iterator().next();
 				if (MorphoUtils.isSupported(usbDevice.getVendorId(), usbDevice.getProductId())) {
 					if (usbManager.hasPermission(usbDevice)) {
-						updateUsbDeviceConnection(usbManager, usbDevice);
+						fingerprintManagerCallback.onFingerprintStatusUpdate(FingerprintStatus.CONNECTED);
 					} else {
 						usbManager.requestPermission(usbDevice, PendingIntent.getBroadcast(context, 0, new Intent(USB_PERMISSION), 0));
-						fingerprintManagerCallback.onFingerprintStatusUpdate(FingerprintStatus.DISCONNECTED);
+						fingerprintManagerCallback.onFingerprintStatusUpdate(FingerprintStatus.CONNECTED);
 					}
 				}
 			}
