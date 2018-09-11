@@ -88,6 +88,7 @@ public class FingerprintManager {
 	
 	public void initialize2(Context newContext, FingerprintManagerCallback newFingerPrintManagerCallback) {
         context = newContext;
+		fingerprintManagerCallback = newFingerPrintManagerCallback;
         morphoDevice = new MorphoDevice();
         fingerPrintUsbDeviceConnection = new FingerPrintUsbDeviceConnection();
         secuConfig = new SecuConfig();
