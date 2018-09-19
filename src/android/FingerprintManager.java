@@ -100,6 +100,7 @@ public class FingerprintManager {
 				fingerprintManagerCallback.onFingerprintStatusUpdate(FingerprintStatus.DISCONNECTED);
 			} else {
 				UsbDevice usbDevice = usbDeviceHashMap.values().iterator().next();
+				if(usbDevice.getVendorId() != 8797) return;
 				if (MorphoUtils.isSupported(usbDevice.getVendorId(), usbDevice.getProductId())) {
 					if (usbManager.hasPermission(usbDevice)) {
 						fingerprintManagerCallback.onFingerprintStatusUpdate(FingerprintStatus.CONNECTED);
@@ -122,6 +123,7 @@ public class FingerprintManager {
             fingerprintManagerCallback.onError(FingerprintError.NO_DEVICE_FOUND);
         } else {
             UsbDevice usbDevice = usbDeviceHashMap.values().iterator().next();
+			if(usbDevice.getVendorId() != 8797) return;
             if (MorphoUtils.isSupported(usbDevice.getVendorId(), usbDevice.getProductId())) {
                 if (usbManager.hasPermission(usbDevice)) {
                     updateUsbDeviceConnection(usbManager, usbDevice);
