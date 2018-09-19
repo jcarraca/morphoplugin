@@ -200,20 +200,12 @@ public class FingerprintManager {
 							int width = morphoImage.getMorphoImageHeader().getNbColumn();
 							int height = morphoImage.getMorphoImageHeader().getNbRow();
 							byte[] bytes = morphoImage.getCompressedImage();
-					
-							File folder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/Fingerprints/");
-							folder.mkdirs();
-							File file = new File(folder,"MyImage.wsq");
-							file.createNewFile();
-							
-							FileOutputStream fileOutputStream = new FileOutputStream(file);
-							fileOutputStream.write(morphoImage.getCompressedImage());
-							fileOutputStream.close();
 							
 							fingerprintManagerCallback.onBitmapUpdate(width, height, encode(bytes));
 							
 						} catch (Exception e) {
-							fingerprintManagerCallback.onBitmapUpdate(0, 0, e.getMessage());
+							fingerprintManagerCallback.onFingerprintStatusUpdate(FingerprintStatus.STOPED);
+							fingerprintManagerCallback.onError(FingerprintError.UNEXPECTED);
 						}	
 						
                     //fingerprintManagerCallback.onPercentageUpdate(100);
