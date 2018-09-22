@@ -43,12 +43,13 @@
 
         <lib-file src="src/android/libs/MorphoSmart_SDK_6.17.3.0.jar"/>
         <lib-file src="src/android/libs/MSO_Secu.jar"/>
+		<lib-file src="src/android/libs/dpuareu.jar"/>
             
         <resource-file src="src/android/jniLibs/armeabi/libMSO_Secu.so" target="jniLibs/armeabi/libMSO_Secu.so"/>
         <resource-file src="src/android/jniLibs/armeabi/libMSO100.so" target="jniLibs/armeabi/libMSO100.so"/>
         <resource-file src="src/android/jniLibs/armeabi/libNativeMorphoSmartSDK_6.17.3.0.so" target="jniLibs/armeabi/libNativeMorphoSmartSDK_6.17.3.0.so"/>
 		
-		<!-- native libs -->
+		<!-- native libs Morpho -->
 		<resource-file src="src/android/libs/armeabi/libMSO_Secu.so" target="libs/armeabi/libMSO_Secu.so" />
 		<resource-file src="src/android/libs/armeabi/libMSO100.so" target="libs/armeabi/libMSO100.so" />
 		<resource-file src="src/android/libs/armeabi/libNativeMorphoSmartSDK_6.17.3.0.so" target="libs/armeabi/libNativeMorphoSmartSDK_6.17.3.0.so" />
@@ -56,5 +57,37 @@
 		<resource-file src="src/android/libs/armeabi-v7a/libMSO_Secu.so" target="libs/armeabi-v7a/libMSO_Secu.so" />
 		<resource-file src="src/android/libs/armeabi-v7a/libMSO100.so" target="libs/armeabi-v7a/libMSO100.so" />
 		<resource-file src="src/android/libs/armeabi-v7a/libNativeMorphoSmartSDK_6.17.3.0.so" target="libs/armeabi-v7a/libNativeMorphoSmartSDK_6.17.3.0.so" />
+		
+		<!-- native libs DigitalPersona -->
+		<resource-file src="src/android/libs/armeabi/libbiofp_e_lapi.so" target="libs/armeabi/libbiofp_e_lapi.so" />
+		<resource-file src="src/android/libs/armeabi/libdpfj.so" target="libs/armeabi/libdpfj.so" />
+		<resource-file src="src/android/libs/armeabi/libdpfpdd.so" target="libs/armeabi/libdpfpdd.so" />
+		<resource-file src="src/android/libs/armeabi/libdpfpdd_4k.so" target="libs/armeabi/libdpfpdd_4k.so" />
+		<resource-file src="src/android/libs/armeabi/libdpfpdd_ptapi.so" target="libs/armeabi/libdpfpdd_ptapi.so" />
+		<resource-file src="src/android/libs/armeabi/libdpfpdd5000.so" target="libs/armeabi/libdpfpdd5000.so" />
+		<resource-file src="src/android/libs/armeabi/libdpfr6.so" target="libs/armeabi/libdpfr6.so" />
+		<resource-file src="src/android/libs/armeabi/libdpfr7.so" target="libs/armeabi/libdpfr7.so" />
+		<resource-file src="src/android/libs/armeabi/libdpuareu_jni.so" target="libs/armeabi/libdpuareu_jni.so" />
+		<resource-file src="src/android/libs/armeabi/libdpuvc.so" target="libs/armeabi/libdpuvc.so" />
+		<resource-file src="src/android/libs/armeabi/libFingerILA.so" target="libs/armeabi/libFingerILA.so" />
+		<resource-file src="src/android/libs/armeabi/libtfm.so" target="libs/armeabi/libtfm.so" />
+		<resource-file src="src/android/libs/armeabi/libZAandroid.so" target="libs/armeabi/libZAandroid.so" />
+		<resource-file src="src/android/libs/armeabi/libdpfpdd_tcd58.so" target="libs/armeabi/libdpfpdd_tcd58.so" />
+		
+		
+		<resource-file src="src/android/libs/armeabi-v7a/libbiofp_e_lapi.so" target="libs/armeabi-v7a/libbiofp_e_lapi.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libdpfj.so" target="libs/armeabi-v7a/libdpfj.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libdpfpdd.so" target="libs/armeabi-v7a/libdpfpdd.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libdpfpdd_4k.so" target="libs/armeabi-v7a/libdpfpdd_4k.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libdpfpdd_ptapi.so" target="libs/armeabi-v7a/libdpfpdd_ptapi.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libdpfpdd5000.so" target="libs/armeabi-v7a/libdpfpdd5000.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libdpfr6.so" target="libs/armeabi-v7a/libdpfr6.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libdpfr7.so" target="libs/armeabi-v7a/libdpfr7.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libdpuareu_jni.so" target="libs/armeabi-v7a/libdpuareu_jni.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libdpuvc.so" target="libs/armeabi-v7a/libdpuvc.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libFingerILA.so" target="libs/armeabi-v7a/libFingerILA.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libtfm.so" target="libs/armeabi-v7a/libtfm.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libZAandroid.so" target="libs/armeabi-v7a/libZAandroid.so" />
+		<resource-file src="src/android/libs/armeabi-v7a/libdpfpdd_tcd58.so" target="libs/armeabi-v7a/libdpfpdd_tcd58.so" />
     </platform>
 </plugin>

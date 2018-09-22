@@ -9,11 +9,14 @@ import android.util.Base64;
 import android.util.Log;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Bitmap.Config;
 import android.os.Environment;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 import com.morpho.android.usb.USBManager;
 import com.morpho.morphosmart.sdk.CallbackMask;
@@ -36,6 +39,9 @@ import morpho.msosecu.sdk.api.MsoSecu;
 import pt.wingman.entel.plugin.definitions.FingerprintError;
 import pt.wingman.entel.plugin.definitions.FingerprintMessageType;
 import pt.wingman.entel.plugin.definitions.FingerprintStatus;
+
+import com.digitalpersona.uareu.dpfj.CompressionImpl;
+import com.digitalpersona.uareu.UareUException;
 
 public class FingerprintManager {
     //region static
@@ -192,7 +198,7 @@ public class FingerprintManager {
                 int acquisitionThreshold = 0;
                 MorphoImage morphoImage = new MorphoImage();
                 LatentDetection latentDetection = isLatentDetection ? LatentDetection.LATENT_DETECT_ENABLE : LatentDetection.LATENT_DETECT_DISABLE;
-                CompressionAlgorithm compressionAlgorithm = MorphoUtils.getCompressionAlgorithm(compressionAlgorithmValue);
+                com.morpho.morphosmart.sdk.CompressionAlgorithm compressionAlgorithm = MorphoUtils.getCompressionAlgorithm(compressionAlgorithmValue);
                 int detectModeChoice = DetectionMode.MORPHO_ENROLL_DETECT_MODE.getValue();
                 fingerprintManagerCallback.onFingerprintStatusUpdate(FingerprintStatus.SCANNING);
                 int morphoErrorCode = morphoDevice.getImage(timeOut, acquisitionThreshold, compressionAlgorithm, compressionRate, detectModeChoice, latentDetection, morphoImage, callbackCmd, observer);
@@ -201,16 +207,16 @@ public class FingerprintManager {
 					try {
 							int width = morphoImage.getMorphoImageHeader().getNbColumn();
 							int height = morphoImage.getMorphoImageHeader().getNbRow();
-							byte[] bytes = morphoImage.getCompressedImage();
+							byte[] bytes = morphoImage.getImage();
+							byte[] rawCompress = processImage(bytes,width,height);
 							
-							fingerprintManagerCallback.onBitmapUpdate(width, height, encode(bytes));
+							fingerprintManagerCallback.onBitmapUpdate(width, height, encode(rawCompress));
 							
 						} catch (Exception e) {
 							fingerprintManagerCallback.onFingerprintStatusUpdate(FingerprintStatus.STOPED);
 							fingerprintManagerCallback.onError(FingerprintError.UNEXPECTED);
 						}	
-						
-                    //fingerprintManagerCallback.onPercentageUpdate(100);
+
                     stop();
                 } else {
                     fingerprintManagerCallback.onFingerprintStatusUpdate(FingerprintStatus.STOPED);
@@ -231,17 +237,12 @@ public class FingerprintManager {
                     case FingerprintMessageType.BITMAP_UPDATE:
                         byte[] bytes = (byte[]) message.getMessage();
                         MorphoImage morphoImage = MorphoImage.getMorphoImageFromLive(bytes);
-						//morphoImage.setCompressionAlgorithm(CompressionAlgorithm.MORPHO_COMPRESS_WSQ);
+						
                         int width = morphoImage.getMorphoImageHeader().getNbColumn();
                         int height = morphoImage.getMorphoImageHeader().getNbRow();
-						//byte[] compressed = morphoImage.getCompressedImage();
-
-						/*Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-						ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();  
-						bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-						byte[] byteArray = byteArrayOutputStream.toByteArray();*/
 						
-						//fingerprintManagerCallback.onBitmapUpdate(width, height, Base64.encodeToString(bytes, Base64.NO_WRAP));
+						//byte[] rawCompress = processImage(bytes,width,height);
+						//fingerprintManagerCallback.onBitmapUpdate(width, height, encode(rawCompress));
 						
                         break;
                     case FingerprintMessageType.PERCENTAGE_UPDATE:
@@ -309,6 +310,92 @@ public class FingerprintManager {
         }
         return new String(dest);
     }
+	
+	public byte[] processImage(byte[] img, int width, int height){
+            
+            
+            
+             Bitmap bmWSQ = null;
+             bmWSQ = getBitmapAlpha8FromRaw(img, width,
+                           height);
+ 
+             byte[] arrayT = null;
+ 
+             Bitmap redimWSQ = overlay(bmWSQ);
+             int numOfbytes = redimWSQ.getByteCount();
+             ByteBuffer buffer = ByteBuffer.allocate(numOfbytes);
+             redimWSQ.copyPixelsToBuffer(buffer);
+             arrayT = buffer.array();
+ 
+             int v1 = 1;
+             for (int i = 0; i < arrayT.length; i++) {
+                    if (i < 40448) { // 79
+                           arrayT[i] = (byte) 255;
+                    } else if (i >= 40448 && i <= 221696) {
+ 
+                           if (v1 < 132) {
+                                  arrayT[i] = (byte) 255;
+                           } else if (v1 > 382) {
+                                  arrayT[i] = (byte) 255;
+                           }
+                           if (v1 == 512) {
+                                  v1 = 0;
+                           }
+                           v1++;
+                    } else if (i > 221696) { // 433
+                           arrayT[i] = (byte) 255;
+                    }
+ 
+             }
+ 
+             CompressionImpl comp = new CompressionImpl();
+             try {
+                    comp.Start();
+                    comp.SetWsqBitrate(500, 0);
+					
+                    byte[] rawCompress = comp.CompressRaw(arrayT, redimWSQ.getWidth(), redimWSQ.getHeight(), 500, 8,
+                                  com.digitalpersona.uareu.Compression.CompressionAlgorithm.COMPRESSION_WSQ_NIST);
+                    
+                    comp.Finish();
+                   
+                    Log.i("Util", "getting WSQ...");
+ 
+                    return rawCompress;
+                   
+             } catch (UareUException e) {
+                    Log.e("Util", "UareUException..." + e);
+                    return null;
+             } catch (Exception e) {
+                    Log.e("Util", "Exception..." + e);
+                    return null;
+             }
+ 
+      
+            
+       }
+	   
+	   private Bitmap overlay(Bitmap bmp) {
+             Bitmap bmOverlay = Bitmap.createBitmap(512, 512, Config.ALPHA_8);
+             Canvas canvas = new Canvas(bmOverlay);
+             canvas.drawBitmap(bmp, 512 / 2 - bmp.getWidth() / 2, 512 / 2 - bmp.getHeight() / 2, null);
+             canvas.save();
+             return bmOverlay;
+       }
+	   
+	   private Bitmap getBitmapAlpha8FromRaw(byte[] Src, int width, int height)
+	   { 
+             byte [] Bits = new byte[Src.length];
+             int i = 0;
+             for(i=0;i<Src.length;i++)
+             {
+                    Bits[i] = Src[i];
+             }
+            
+             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ALPHA_8);
+             bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(Bits));
+            
+             return bitmap;
+       }
 
     //region Error
     private String getSDKErrorMessage(int morphoErrorCode) {
